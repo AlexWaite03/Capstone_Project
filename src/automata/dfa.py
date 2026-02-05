@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, Set, Tuple, FrozenSet, Iterable, Optional, List
 
-from nfa import NFA, Tok, eps_closure, move
+from .nfa import NFA, Tok, eps_closure, move
 
 
 # ------------------------------------------------------------

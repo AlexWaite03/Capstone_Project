@@ -252,21 +252,20 @@ def build_nfa_url_02_at_in_authority() -> NFA:
     """
     b = NFABuilder()
 
-    # We'll assume scheme already validated externally.
-    # Build: (NOT_SLASH)* AT
-    # Since Tok doesn't have NOT_SLASH, we approximate by allowing any token except SLASH
-    # by building a union of all tokens except SLASH, then star it.
+    # Build a simple 2-state recognizer that accepts iff an AT token
+    # appears anywhere in the stream. This avoids subtle epsilon/union
+    # interactions from the fragment-based approach.
 
-    # Union of allowed tokens in authority (except SLASH)
-    allowed = None
+    s0 = b.new_state()  # start
+    s1 = b.new_state()  # seen AT
+
+    # Loop on any token in both states; when AT seen from s0 go to s1
     for tok in Tok:
-        if tok == Tok.SLASH:
-            continue
-        frag = b.literal(tok)
-        allowed = frag if allowed is None else b.union(allowed, frag)
+        b.add_trans(s0, tok, s0)
+        b.add_trans(s1, tok, s1)
 
-    assert allowed is not None
-    auth_star = b.star(allowed)
-    at = b.literal(Tok.AT)
-    frag = b.concat(auth_star, at)
+    b.add_trans(s0, Tok.AT, s1)
+
+    # Make s1 the 'out' that leads to accept
+    frag = Fragment(start=s0, outs={s1})
     return b.finalize(frag)

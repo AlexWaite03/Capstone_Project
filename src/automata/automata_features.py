@@ -2,12 +2,6 @@
 # ============================================================
 # Feature extraction layer for the Hybrid Phishing Detector.
 #
-# You said you already have:
-#   - nfa.py
-#   - dfa.py
-#   - patterns.py
-# and you want automata_features.py completed.
-#
 # This module:
 #   1) Tokenizes by character-class tokens (Tok) (dfa.py / nfa.py compatible)
 #   2) Implements ALL 35 rules as deterministic finite-state matchers:
