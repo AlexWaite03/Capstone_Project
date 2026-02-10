@@ -50,7 +50,3 @@ def extract_features(request: FeatureRequest) -> Dict[str, Any]:
 def health_check():
     return {"status": "ok", "message": "API is running"}
 
-# -------------------------
-# Example to run:
-# uvicorn api:app --reload --port 8000
-# -------------------------
