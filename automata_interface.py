@@ -5,7 +5,7 @@
 # ============================================================
 
 from typing import Optional, Dict, Any, List
-from automata.automata_features import extract_automata_features, feat_key
+from src.automata.automata_features import extract_automata_features, feat_key
 
 def automata_interface(
     url: Optional[str] = None,

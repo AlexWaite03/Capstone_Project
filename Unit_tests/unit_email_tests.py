@@ -1,4 +1,4 @@
-from automata.automata_features import match_email_09
+from src.automata.automata_features import match_email_09
 
 def test_urgency_detected():
     ctx = {
