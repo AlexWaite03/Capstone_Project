@@ -15,18 +15,25 @@ app = FastAPI(title="Hybrid Phishing Detector API", version="1.0")
 # -------------------------
 class EmailContext(BaseModel):
     from_addr: str
-    reply_to: Optional[str] = ""
-    return_path: Optional[str] = ""
-    message_id: Optional[str] = ""
-    subject: Optional[str] = ""
-    body_text: Optional[str] = ""
-    body_html: Optional[str] = ""
-    attachment_names: Optional[List[str]] = []
-    display_name: Optional[str] = ""
+    reply_to: Optional[str] = None
+    return_path: Optional[str] = None
+    message_id: Optional[str] = None
+    subject: Optional[str] = None
+    body_text: Optional[str] = None
+    body_html: Optional[str] = None
+    attachment_names: Optional[List[str]] = Field(default_factory=list)
+    display_name: Optional[str] = None
 
 class FeatureRequest(BaseModel):
     url: Optional[str] = None
     email_ctx: Optional[EmailContext] = None
+
+class DetectionRequest(BaseModel):
+    url: Optional[str] = None
+    email_ctx: Optional[Dict[str, Any]] = None
+
+
+
 
 # -------------------------
 # Routes
@@ -41,6 +48,16 @@ def extract_features(request: FeatureRequest) -> Dict[str, Any]:
 
     # Extract features
     result = automata_interface(url=request.url, email_ctx=email_ctx_dict)
+    return result
+
+@app.post("/detect")
+def detect(request: DetectionRequest):
+
+    result = automata_interface(
+        url=request.url,
+        email_ctx=request.email_ctx
+    )
+
     return result
 
 # -------------------------
