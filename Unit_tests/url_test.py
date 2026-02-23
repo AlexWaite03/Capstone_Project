@@ -1,4 +1,4 @@
-from automata.automata_features import match_url_01, match_url_02
+from src.automata.automata_features import match_url_01, match_url_02
 
 def test_ip_host_detected():
     url = "http://192.168.0.1/login"
