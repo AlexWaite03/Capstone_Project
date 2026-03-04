@@ -1,2 +1,7 @@
 capstone_venv/
 data/ 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
