@@ -44,7 +44,7 @@ def extract_features(request: FeatureRequest) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail="Provide either 'url' or 'email_ctx'")
 
     # Convert Pydantic EmailContext to dict for interface
-    email_ctx_dict = request.email_ctx.dict() if request.email_ctx else None
+    email_ctx_dict = request.email_ctx.model_dump() if request.email_ctx else None
 
     # Extract features
     result = automata_interface(url=request.url, email_ctx=email_ctx_dict)
