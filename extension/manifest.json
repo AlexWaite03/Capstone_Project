@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "CyberLang Phishing Detection Extension",
+    "description": "A Chrome extension that detects phishing websites using the hybrid Machine Learning and Automata approach developed by CyberLang Analytics.",
+    "version": "1.0",
+    "action": {
+        "popup": "popup.html",
+        "icon": "hi-icon.png"
+    }
+}
