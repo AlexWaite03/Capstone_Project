@@ -1,7 +1,14 @@
-capstone_venv/
-data/ 
-# Python
+# Python cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
+
+# Pytest
+.pytest_cache/
+
+# Virtual environment
+capstone_venv/
+venv/
+
+# Data
+data/
+

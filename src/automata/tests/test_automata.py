@@ -1,18 +1,18 @@
 import pytest
 
 # Adjust these imports to match your repo
-from automata.nfa import (
+from src.automata.nfa import (
     Tok,
     nfa_accepts_tokens,
     build_nfa_url_02_at_in_authority,
 )
-from automata.dfa import (
+from src.automata.dfa import (
     determinize,
     dfa_accepts_text,
     build_counting_dfa,
     build_length_threshold_dfa,
 )
-from automata.automata_features import (
+from src.automata.automata_features import (
     extract_features_url,
     extract_features_email,
 )
