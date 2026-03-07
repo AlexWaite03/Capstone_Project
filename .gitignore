@@ -9,5 +9,6 @@ __pycache__/
 capstone_venv/
 venv/
 
+#data folder
 data/
 
