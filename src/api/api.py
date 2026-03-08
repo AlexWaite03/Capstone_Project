@@ -2,6 +2,7 @@
 # ============================================================
 # FastAPI endpoint for Hybrid Phishing Detector using Automata
 #to run swagger ui using test branch structure:  uvicorn src.api.api:app --reload
+# http://127.0.0.1:8000/docs  in browser
 # ============================================================
 
 from fastapi import FastAPI, HTTPException
@@ -31,7 +32,9 @@ class FeatureRequest(BaseModel):
     email_ctx: Optional[EmailContext] = None
 
 class PredictRequest(BaseModel):
-    features: List[float]
+    features: Optional[List[float]]
+    url: Optional[str] = None
+    email_ctx: Optional[EmailContext] = None
 
 class DetectionRequest(BaseModel):
     url: Optional[str] = None
