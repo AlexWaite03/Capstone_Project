@@ -23,6 +23,7 @@ jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
 kaggle==1.7.4.5
 MarkupSafe==3.0.3
+python-multipart==0.0.22
 narwhals==2.15.0
 numpy==2.2.6
 packaging==26.0
