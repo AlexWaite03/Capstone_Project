@@ -10,10 +10,23 @@ from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 from src.api.automata_interface import automata_interface
 from src.automata.automata_features import extract_automata_features, url_host, url_tld
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
 
 app = FastAPI(title="Hybrid Phishing Detector API", version="1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",                    # web app dev
+        #"https://your-app.com",                     # web app prod
+        "chrome-extension://odiboohihaljhmfgeonnfiojclpeagjk",     # fill in after first load
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # -------------------------
 # Request Models
@@ -106,7 +119,12 @@ def predict(request: PredictRequest):
                 **{f"match_url_{i:02}": automata_feats.get(f"match_url_{i:02}", 0)
                    for i in range(1, 21)}
             }
-            feature_df = pd.DataFrame([feature_row])
+            #feature_df = pd.DataFrame([feature_row])
+            expected_cols = list(url_model.feature_names_in_)
+            feature_df = pd.DataFrame([feature_row]).reindex(columns=expected_cols)
+
+            print("Model expects:", list(url_model.feature_names_in_))
+            print("Sending:     ", list(feature_df.columns))
 
             prediction = url_model.predict(feature_df)[0]
             probability = url_model.predict_proba(feature_df)[0][1]
