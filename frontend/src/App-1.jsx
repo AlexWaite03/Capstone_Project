@@ -1,30 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useScanner } from '@shared/useScanner'
 import './App.css'
 
 function App() {
-    // Initialize view from URL hash, fall back to 'scanner'
-  const [view, setView] = useState(() => {
-  const hash = window.location.hash.replace('#', '')
-    return hash || 'scanner'
-  })
-
-    // Wrap setView so the URL and the view always stay in sync
-  const navigate = (newView) => {
-    setView(newView)
-    window.history.pushState(null, '', `#${newView}`)
-  }
-
-    // Handle browser back/forward buttons
-  useEffect(() => {
-    const onPopState = () => {
-        setView(window.location.hash.replace('#', '') || 'scanner')
-    }
-  window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
-  }, [])
-
-
+  const [view, setView] = useState('scanner')
   const [scanType, setScanType] = useState('URL')
   const [showInfo, setShowInfo] = useState(false)
   const [inputValue, setInputValue] = useState('')
@@ -61,19 +40,19 @@ function App() {
       <div className="nav-links">
         <button
           className={view === 'scanner' ? 'nav-item active' : 'nav-item'}
-          onClick={() => navigate('scanner')}
+          onClick={() => setView('scanner')}
         >
           Scanner
         </button>
         <button
           className={view === 'works' ? 'nav-item active' : 'nav-item'}
-          onClick={() => navigate('works')}
+          onClick={() => setView('works')}
         >
           How it Works
         </button>
         <button
           className={view === 'about' ? 'nav-item active' : 'nav-item'}
-          onClick={() => navigate('about')}
+          onClick={() => setView('about')}
         >
           About Us
         </button>

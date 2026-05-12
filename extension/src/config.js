@@ -1,15 +1,11 @@
 // Centralized config for the extension. Switches between dev and prod
 // based on the Vite mode at build time.
 
-const isDev = import.meta.env.DEV;
+//const isDev = import.meta.env.DEV;
 
-export const API_URL = isDev
-  ? 'http://localhost:8000'
-  : 'https://your-api.com';
+export const API_URL = 'http://localhost:8000';
 
-export const WEB_APP_URL = isDev
-  ? 'http://localhost:5173'
-  : 'https://your-app.com';
+export const WEB_APP_URL = 'http://localhost:5173';
 
 // How long to trust a cached scan result before re-scanning.
 export const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
