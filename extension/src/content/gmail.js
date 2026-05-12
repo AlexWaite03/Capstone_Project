@@ -4,26 +4,18 @@
 // background worker for scanning, and injects a banner above the email body
 // with the result.
 //
-// IMPORTANT: Gmail's class names are auto-generated and DO rotate. The
-// selectors below are what worked at time of writing. If the extension
+// Gmail's class names are auto-generated and DO rotate. If the extension
 // stops finding emails, inspect Gmail's DOM and update SELECTORS.
-//
-// The script fails silently on selector misses — better to do nothing than
-// spam errors into the user's console.
 
 const SELECTORS = {
-  // The email body container in the reading pane.
-  body: '.a3s.aiL',
-  // Sender chip on the open email.
-  sender: '.gD',
-  // Subject line at the top of the open email.
-  subject: 'h2.hP',
+  body: '.a3s.aiL',         // open email body
+  sender: '.gD',            // sender chip
+  subject: 'h2.hP',         // subject heading
 };
 
 const BANNER_ATTR = 'data-cyberlang-banner';
 const SCANNED_ATTR = 'data-cyberlang-scanned';
 
-// Throttle scans: don't re-scan the same DOM node within this window.
 const SCAN_THROTTLE_MS = 1000;
 let lastScanTime = 0;
 
@@ -37,38 +29,25 @@ function maybeScanOpenEmail() {
   const senderEl = document.querySelector(SELECTORS.sender);
   const subjectEl = document.querySelector(SELECTORS.subject);
 
-  // Require body + sender so we don't scan UI chrome by accident.
+  // Require sender so we don't scan stray Gmail UI.
   if (!senderEl) return;
 
   bodyEl.setAttribute(SCANNED_ATTR, 'true');
   lastScanTime = now;
 
-  // Try to grab attachment names if visible.
-  const attachmentEls = document.querySelectorAll('.aQy, .aZo');
-  const attachmentNames = Array.from(attachmentEls)
-    .map(el => el.getAttribute('download_url') || el.textContent?.trim())
-    .filter(Boolean);
-
+  // Payload matches what the service worker forwards to analyzeEmail.
   const emailCtx = {
     from_addr: senderEl.getAttribute('email') || '',
-    display_name: senderEl.getAttribute('name') || null,
     subject: subjectEl?.textContent.trim() || null,
     body_text: bodyEl.innerText || bodyEl.textContent || '',
-    body_html: bodyEl.innerHTML || null,
-    attachment_names: attachmentNames,
-    // The following are NOT visible in Gmail's DOM:
-    reply_to: null,
-    return_path: null,
-    message_id: null,
   };
 
-  // Send to background. We don't await — the response handler injects the banner.
   chrome.runtime.sendMessage(
     { type: 'EMAIL_CONTENT', payload: emailCtx },
     (response) => {
-      if (chrome.runtime.lastError) return;           // Background may be reloading; silently skip.
+      if (chrome.runtime.lastError) return; // worker reloading; silent skip
       if (!response?.ok) {
-        injectErrorBanner(bodyEl, response?.error || 'Scanner server unavailable.');
+        injectErrorBanner(bodyEl, response?.error);
         return;
       }
       injectBanner(bodyEl, response.result);
@@ -76,27 +55,63 @@ function maybeScanOpenEmail() {
   );
 }
 
+// ---------- Banner injection ----------
+
+function bannerAlreadyPresent(emailEl) {
+  // Look in the parent rather than just previousElementSibling to accomodate for Gmail re-rendering
+  return emailEl.parentNode?.querySelector(`[${BANNER_ATTR}]`) != null;
+}
+
+function bannerStyles(riskLabel) {
+  if (riskLabel === 'High Risk') {
+    return { bg: '#fee2e2', border: '#fca5a5', icon: '⚠️' };
+  }
+  if (riskLabel === 'Medium Risk') {
+    return { bg: '#fef9c3', border: '#fbbf24', icon: '⚡' };
+  }
+  return { bg: '#dcfce7', border: '#86efac', icon: '✓' };
+}
+
+function buildBanner({ bg, border, color = '#111', icon, html }) {
+  const banner = document.createElement('div');
+  banner.setAttribute(BANNER_ATTR, 'true');
+  banner.style.cssText = `
+    padding: 10px 14px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    background: ${bg};
+    border: 1px solid ${border};
+    color: ${color};
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `;
+  banner.innerHTML = `<span style="font-size: 18px;">${icon}</span><span>${html}</span>`;
+  return banner;
+}
 
 function injectBanner(emailEl, result) {
-  // Don't double-inject.
-  if (emailEl.previousElementSibling?.hasAttribute(BANNER_ATTR)) return;
+  if (bannerAlreadyPresent(emailEl)) return;
+
+  const { bg, border, icon } = bannerStyles(result.riskLabel);
+  const rules = result.matchedRules || [];
+
+  const rulesHtml = rules.length > 0
+    ? `
+      <div style="margin-top: 6px; font-size: 12px; color: #374151;">
+        <strong>Why?</strong>
+        <ul style="margin: 4px 0 0; padding-left: 18px;">
+          ${rules.slice(0, 3).map(r => `<li>${formatRule(r)}</li>`).join('')}
+        </ul>
+        ${rules.length > 3 ? `<div style="margin-top: 4px; opacity: 0.7;">+ ${rules.length - 3} more</div>` : ''}
+      </div>
+    `
+    : '';
 
   const banner = document.createElement('div');
   banner.setAttribute(BANNER_ATTR, 'true');
-
-  const bg =
-    result.riskLabel === 'High Risk' ? '#fee2e2' :
-    result.riskLabel === 'Medium Risk' ? '#fef9c3' :
-    '#dcfce7';
-  const border =
-    result.riskLabel === 'High Risk' ? '#fca5a5' :
-    result.riskLabel === 'Medium Risk' ? '#fbbf24' :
-    '#86efac';
-  const icon =
-    result.riskLabel === 'High Risk' ? '⚠️' :
-    result.riskLabel === 'Medium Risk' ? '⚡' :
-    '✓';
-
   banner.style.cssText = `
     padding: 10px 14px;
     margin: 8px 0;
@@ -106,54 +121,43 @@ function injectBanner(emailEl, result) {
     background: ${bg};
     border: 1px solid ${border};
     color: #111;
-    display: flex;
-    align-items: center;
-    gap: 8px;
   `;
-
   banner.innerHTML = `
-    <span style="font-size: 18px;">${icon}</span>
-    <span>
-      <strong>CyberLang:</strong> ${result.riskLabel}
-      (${result.percentage}% phishing likelihood)
-    </span>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 18px;">${icon}</span>
+      <span><strong>CyberLang:</strong> ${result.riskLabel} (${result.percentage}% phishing likelihood)</span>
+    </div>
+    ${rulesHtml}
   `;
 
   emailEl.parentNode.insertBefore(banner, emailEl);
 }
 
-function injectErrorBanner(emailEl, error) {
-  // Don't double-inject.
-  if (emailEl.previousElementSibling?.hasAttribute(BANNER_ATTR)) return;
+function formatRule(rule) {
+  if (typeof rule === 'string') return rule;
+  return `${rule.id}: ${rule.description}`;
+}
 
-  const banner = document.createElement('div');
-  banner.setAttribute(BANNER_ATTR, 'true');
+function injectErrorBanner(emailEl, errorMessage) {
+  if (bannerAlreadyPresent(emailEl)) return;
 
-  banner.style.cssText = `
-    padding: 10px 14px;
-    margin: 8px 0;
-    border-radius: 6px;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    background: #fee2e2;
-    border: 1px solid #fca5a5;
-    color: #991b1b;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  `;
+  const message = errorMessage
+    ? `Couldn't scan this email — ${errorMessage}`
+    : `Scanner server unavailable. Please try again later.`;
 
-  banner.innerHTML = `
-    <span style="font-size: 18px;">⚠️</span>
-    <span>
-      <strong>CyberLang:</strong> ${error} server. Please try again later.
-    </span>
-  `;
+  const banner = buildBanner({
+    bg: '#fee2e2',
+    border: '#fca5a5',
+    color: '#991b1b',
+    icon: '❌',
+    html: `<strong>CyberLang:</strong> ${message}`,
+  });
 
   emailEl.parentNode.insertBefore(banner, emailEl);
 }
 
-// Watch the DOM for new emails being opened.
+// ---------- DOM watching ----------
+
 const observer = new MutationObserver(() => {
   maybeScanOpenEmail();
 });

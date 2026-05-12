@@ -22,7 +22,7 @@ export const API_TIMEOUT_MS = 5000;
 
 // Domains we trust without scanning. Saves API calls and avoids
 // false-positive warnings on common sites.
-/* export const SAFE_DOMAINS = [
+export const SAFE_DOMAINS = [
   'google.com',
   'youtube.com',
   'github.com',
@@ -30,7 +30,4 @@ export const API_TIMEOUT_MS = 5000;
   'mozilla.org',
   'microsoft.com',
   'apple.com',
-  'amazon.com',
-  'cloudflare.com',
-  'stackoverflow.com',
-]; */
+];

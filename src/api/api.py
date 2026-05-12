@@ -119,7 +119,12 @@ def predict(request: PredictRequest):
                 **{f"match_url_{i:02}": automata_feats.get(f"match_url_{i:02}", 0)
                    for i in range(1, 21)}
             }
-            feature_df = pd.DataFrame([feature_row])
+            #feature_df = pd.DataFrame([feature_row])
+            expected_cols = list(url_model.feature_names_in_)
+            feature_df = pd.DataFrame([feature_row]).reindex(columns=expected_cols)
+
+            print("Model expects:", list(url_model.feature_names_in_))
+            print("Sending:     ", list(feature_df.columns))
 
             prediction = url_model.predict(feature_df)[0]
             probability = url_model.predict_proba(feature_df)[0][1]

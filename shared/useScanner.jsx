@@ -43,6 +43,16 @@ function shapeResult(apiResponse, scanType) {
   }
 }
 
+export async function analyzeUrl(url) {
+  const data = await callPredict({ url })
+  return shapeResult(data, 'URL')
+}
+
+export async function analyzeEmail({ body_text }) {
+  const data = await callPredict({ email_text: body_text })
+  return shapeResult(data, 'Email')
+}
+
 // ---- Hook ----------------------------------------------------------------
 
 export function useScanner() {
@@ -51,6 +61,9 @@ export function useScanner() {
   const [scanError, setScanError] = useState(null)
 
   const analyze = async ({ scanType, inputValue }) => {
+    setScanResult(null)
+    setScanError(null)
+
     if (!inputValue.trim()) {
       setScanError('Please enter a URL or Email text before analyzing.')
       return
@@ -76,8 +89,7 @@ export function useScanner() {
       payload = { email_text: inputValue }
     }
 
-    setScanResult(null)
-    setScanError(null)
+    
     setLoading(true)
 
     try {

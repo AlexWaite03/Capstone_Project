@@ -1,10 +1,11 @@
-// Background service worker. Three jobs:
+// Service worker. Three jobs:
 //   1. Intercept top-frame navigations, scan the URL, redirect to
 //      warning.html if High Risk.
 //   2. Update the toolbar badge for the active tab based on its scan result.
 //   3. Handle scan requests forwarded from content scripts (Gmail).
 
-import { analyzeUrl, analyzeEmail } from '@frontend/api.js';
+import { analyzeUrl, analyzeEmail } from '@shared/useScanner';
+
 import {
   getCachedScan,
   setCachedScan,
@@ -13,7 +14,7 @@ import {
   clearTabState,
   isSafeDomain,
   isScannableUrl,
-} from '../shared/storage.js';
+} from '../storage.js';
 
 // ---------- Installation ----------
 

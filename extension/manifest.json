@@ -4,20 +4,20 @@
   "version": "1.0.0",
   "description": "Hybrid phishing detection. Scan URLs and Gmail messages with Automata + ML.",
   "icons": {
-    "16": "public/icons/logo_16.png",
-    "32": "public/icons/logo_32.png",
-    "64": "public/icons/logo_64.png"
+    "16": "icons/logo_16.png",
+    "32": "icons/logo_32.png",
+    "64": "icons/logo_64.png"
   },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "public/icons/logo_16.png",
-      "32": "public/icons/logo_32.png"
+      "16": "icons/logo_16.png",
+      "32": "icons/logo_32.png"
     },
     "default_title": "CyberLang Phishing Scanner"
   },
   "background": {
-    "service_worker": "src/background/background.js",
+    "service_worker": "src/content/service_worker.js",
     "type": "module"
   },
   "content_scripts": [
