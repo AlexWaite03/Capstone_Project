@@ -3,6 +3,14 @@
 
 //const isDev = import.meta.env.DEV;
 
+//export const API_URL = isDev
+//  ? 'http://localhost:8000'
+//  : 'https://your-api.com';
+
+//export const WEB_APP_URL = isDev
+//  ? 'http://localhost:5173'
+//  : 'https://your-app.com';
+
 export const API_URL = 'http://localhost:8000';
 
 export const WEB_APP_URL = 'http://localhost:5173';
