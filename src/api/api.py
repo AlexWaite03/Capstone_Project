@@ -158,8 +158,7 @@ def predict(request: PredictRequest):
         if not results:
             raise HTTPException(status_code=400, detail="No URL or email provided")
 
-        return results , print(type(url_model))
-
+        return results 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
