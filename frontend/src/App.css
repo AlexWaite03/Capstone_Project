@@ -1,0 +1,116 @@
+/* Layout & Navbar */
+.container { min-height: 100vh; background-color: #0d1b2a; color: white; display: flex; flex-direction: column; }
+.navbar { display: flex; justify-content: space-between; padding: 25px 80px; border-bottom: 2px solid #e67e22; }
+.nav-item { background: none; border: none; color: white; font-weight: bold; cursor: pointer; margin-left: 25px; font-size: 1rem; }
+.nav-item.active { border-bottom: 3px solid white; padding-bottom: 5px; }
+
+/* Scanner Page */
+.scanner-hero { text-align: center; padding: 80px 20px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 3.5rem; margin-bottom: 5px; }
+.subtitle { opacity: 0.8; margin-bottom: 45px; }
+
+/* Sliding Toggle (Blue with Orange Borders) */
+.slider-box {
+  position: relative;
+  display: flex;
+  width: 380px;
+  height: 50px;
+  border: 1px solid #e67e22;
+  border-radius: 8px;
+  margin: 0 auto 40px auto;
+  overflow: hidden;
+  background-color: #0d1b2a;
+}
+.slider-btn { flex: 1; background: none; border: none; color: white; font-weight: bold; cursor: pointer; z-index: 2; font-size: 1rem; }
+.slider-active-overlay {
+  position: absolute;
+  top: 0; width: 50%; height: 100%;
+  background-color: rgba(230, 126, 34, 0.25);
+  transition: 0.3s ease-in-out;
+  z-index: 1;
+}
+.slider-active-overlay.left { left: 0; border-right: 1px solid #e67e22; }
+.slider-active-overlay.right { left: 50%; border-left: 1px solid #e67e22; }
+
+/* Input Group */
+.input-row { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; margin-bottom: 30px; position: relative; }
+.input-container { width: 100%; max-width: 680px; border: 1px solid #e67e22; border-radius: 8px; padding: 6px; background: #1b263b; }
+.scan-field { width: 100%; background: transparent; border: none; color: white; padding: 12px; font-size: 1.1rem; box-sizing: border-box; }
+.email-field { min-height: 160px; resize: none; }
+
+/* Info Bubble */
+.info-anchor { position: relative; }
+.info-btn { border: 2px solid #e67e22; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; color: #e67e22; cursor: pointer; font-weight: bold; }
+.info-message { position: absolute; left: 50px; top: -10px; width: 220px; background: #1b263b; border: 1px solid #e67e22; padding: 12px; border-radius: 8px; font-size: 0.85rem; text-align: left; z-index: 50; }
+
+.big-analyze-btn { width: 100%; max-width: 710px; padding: 18px; font-size: 1.8rem; background: linear-gradient(to right, #1b263b, #e67e22); border: 1px solid #e67e22; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+/* How it Works Styles */
+
+/* Page */
+.works-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem;
+  color: #fff;
+}
+
+
+ 
+
+/* Card */
+.work-card {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ff7a18;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  background: rgba(10, 25, 47, 0.75);
+  box-shadow: 0 0 30px rgba(255, 122, 24, 0.25);
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+}
+
+/* Info dot */
+.info-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #ff7a18;
+  color: #ff7a18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Content */
+.card-content {
+  padding-top: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+
+
+ 
+/* About Us Styles */
+.about-view { padding: 60px 20px; text-align: center; }
+.mission-header { display: flex; align-items: center; justify-content: center; gap: 30px; }
+.hr-line { height: 1px; width: 200px; background: linear-gradient(to right, transparent, #e67e22, transparent); }
+.tagline { font-style: italic; opacity: 0.8; font-size: 1.3rem; margin: 15px 0 50px 0; }
+.photo-gallery { display: flex; gap: 15px; justify-content: center; position: relative; margin-bottom: 60px; }
+.photo-card img { width: 150px; height: 200px; object-fit: cover; border: 1px solid #e67e22; border-radius: 4px; }
+.glow-line { position: absolute; bottom: -8px; width: 85%; height: 3px; background: #e67e22; box-shadow: 0 0 15px #e67e22; }
+.values-row { display: flex; gap: 20px; justify-content: center; }
+.val-box { border: 1px solid #e67e22; padding: 30px; flex: 1; max-width: 280px; }
+.val-box.focus { background: rgba(230, 126, 34, 0.15); box-shadow: 0 0 25px rgba(230,126,34,0.3); }
