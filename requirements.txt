@@ -31,8 +31,8 @@ pillow==12.1.0
 pluggy==1.6.0
 protobuf==6.33.4
 pyarrow==23.0.0
-pydantic==2.12.5
-pydantic_core==2.41.5
+pydantic==2.13.4
+pydantic_core==2.46.4
 pydeck==0.9.1
 Pygments==2.19.2
 pytest==9.0.2

@@ -4,11 +4,25 @@
 # ============================================================
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 from automata_interface import automata_interface
 
 app = FastAPI(title="Hybrid Phishing Detector API", version="1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",                    # web app dev
+        #"https://your-app.com",                     # web app prod
+        "chrome-extension://odiboohihaljhmfgeonnfiojclpeagjk",     # fill in after first load
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # -------------------------
 # Request Models
@@ -32,7 +46,16 @@ class DetectionRequest(BaseModel):
     url: Optional[str] = None
     email_ctx: Optional[Dict[str, Any]] = None
 
+class ScanRequest(BaseModel):
+    type: str    # "URL" or "Email"
+    value: str
 
+class ScanResponse(BaseModel):
+    percentage: int
+    riskLabel: str
+    reasons: List[str] = Field(default_factory=list)
+    matchedRules: List[str] = Field(default_factory=list)
+    features: Optional[Dict[str, Any]] = None
 
 
 # -------------------------
@@ -58,7 +81,25 @@ def detect(request: DetectionRequest):
         email_ctx=request.email_ctx
     )
 
-    return result
+    matched_rules = result.get("matched_rules", [])
+    
+    if request.url:
+        percentage = min(100, (len(matched_rules)/20) * 100 )
+    else:
+        percentage = min(100, (len(matched_rules)/15) * 100)
+
+    if percentage >= 50:
+        risk_label = "High Risk"
+    elif percentage >= 10:
+        risk_label = "Medium Risk"
+    else:
+        risk_label = "Low Risk"
+
+    return {
+        **result,
+        "percentage": percentage,
+        "riskLabel": risk_label,
+    }
 
 # -------------------------
 # Health Check Endpoint
