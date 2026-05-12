@@ -10,10 +10,23 @@ from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 from src.api.automata_interface import automata_interface
 from src.automata.automata_features import extract_automata_features, url_host, url_tld
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
 
 app = FastAPI(title="Hybrid Phishing Detector API", version="1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",                    # web app dev
+        #"https://your-app.com",                     # web app prod
+        "chrome-extension://odiboohihaljhmfgeonnfiojclpeagjk",     # fill in after first load
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # -------------------------
 # Request Models
