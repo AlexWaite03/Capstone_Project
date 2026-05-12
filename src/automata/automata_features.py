@@ -356,11 +356,15 @@ def match_email_03(ctx: Dict[str, Any]) -> bool:
 
 
 def match_email_04(ctx: Dict[str, Any]) -> bool:
-    return _lower(ctx.get("reply_to", "")).strip() == ""
+    # Only flag when the field was explicitly provided but is blank.
+    # None means the caller didn't supply it (e.g. paste-only input) — not a signal.
+    val = ctx.get("reply_to")
+    return val is not None and _lower(val).strip() == ""
 
 
 def match_email_05(ctx: Dict[str, Any]) -> bool:
-    return _lower(ctx.get("return_path", "")).strip() == ""
+    val = ctx.get("return_path")
+    return val is not None and _lower(val).strip() == ""
 
 
 def match_email_06(ctx: Dict[str, Any]) -> bool:
