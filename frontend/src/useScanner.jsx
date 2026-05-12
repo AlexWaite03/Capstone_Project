@@ -1,7 +1,7 @@
 // useScanner.jsx
 import { useState } from 'react'
 
-const API_BASE = 'https://your-backend.onrender.com'
+const API_BASE = 'https://cyberlang-phishing-detector.onrender.com'
 
 // ---- API call ------------------------------------------------------------
 
