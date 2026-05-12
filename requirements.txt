@@ -48,3 +48,4 @@ six==1.17.0
 smmap==5.0.2
 starlette==0.50.0
 streamlit==1.53.1
+uvicorn==0.34.0
