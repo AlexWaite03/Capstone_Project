@@ -20,7 +20,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",                    # web app dev
-        #"https://your-app.com",                     # web app prod
+        "https://cyberlang-capstone.onrender.com",                     # web app prod
         "chrome-extension://odiboohihaljhmfgeonnfiojclpeagjk",     # fill in after first load
     ],
     allow_credentials=True,
