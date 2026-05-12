@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "CyberLang Phishing Scanner",
+  "version": "1.0.0",
+  "description": "Hybrid phishing and scam detection. Scan URLs and Gmail messages with Automata + ML.",
+  "icons": {
+    "16": "public/icons/logo_16.png",
+    "32": "public/icons/logo_32.png",
+    "64": "public/icons/logo_64.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "public/icons/logo_16.png",
+      "32": "public/icons/logo_32.png"
+    },
+    "default_title": "CyberLang Phishing Scanner"
+  },
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "src/content/gmail.js-loader.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://your-api.com/*",
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "warning.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "**/*",
+        "*"
+      ],
+      "use_dynamic_url": false
+    }
+  ]
+}

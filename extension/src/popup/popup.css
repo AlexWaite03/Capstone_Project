@@ -1,0 +1,402 @@
+/* ============================================================
+   CyberLang popup — dark theme overrides for ScannerView
+   All rules scoped under .popup-theme so the web app is unaffected.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Caveat:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+
+.popup-theme {
+  --ink-deep: #0b1426;
+  --ink: #1a2741;
+  --ember: #f08236;
+  --ember-bright: #ffa658;
+  --ember-deep: #c25a1a;
+  --paper: #f4ede0;
+  --paper-dim: rgba(244, 237, 224, 0.7);
+  --paper-faint: rgba(244, 237, 224, 0.4);
+  --display: 'Barlow Condensed', sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+  --hand: 'Caveat', cursive;
+
+  font-family: var(--body);
+  color: var(--paper);
+}
+
+/* ---------- ScannerView overrides ---------- */
+
+.popup-theme .scanner-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  background: transparent;
+  align-items: stretch;
+}
+
+.popup-theme .scanner-hero h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 0.98;
+  margin: 4px 0 0;
+  color: var(--paper);
+  text-align: left;
+}
+
+.popup-theme .subtitle {
+  font-family: var(--body);
+  font-size: 11.5px;
+  color: var(--paper-dim);
+  margin: 0;
+  text-align: left;
+}
+
+/* ---------- Toggle slider (URL/Email) ---------- */
+
+.popup-theme .slider-box {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px;
+  border: 1.2px solid var(--paper-faint);
+  border-radius: 999px;
+  background: rgba(11, 20, 38, 0.35);
+  position: relative;
+  gap: 2px;
+}
+
+.popup-theme .slider-active-overlay {
+  display: none; /* Hide the original overlay — we restyle .active directly */
+}
+
+.popup-theme .slider-btn {
+  background: transparent;
+  border: none;
+  color: var(--paper-dim);
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.popup-theme .slider-btn.active {
+  background: rgba(244, 237, 224, 0.12);
+  color: var(--paper);
+  box-shadow: 0 0 0 1px var(--paper-faint) inset;
+}
+
+.popup-theme .slider-btn:hover:not(.active) {
+  color: var(--paper);
+}
+
+/* ---------- Input row ---------- */
+
+.popup-theme .input-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.popup-theme .input-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popup-theme .scan-field {
+  width: 100%;
+  background: rgba(11, 20, 38, 0.5);
+  border: 1.5px solid var(--paper);
+  border-radius: 14px;
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 13px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.popup-theme .scan-field::placeholder {
+  color: var(--paper-dim);
+  font-style: italic;
+}
+
+.popup-theme .scan-field:focus {
+  border-color: var(--ember);
+  box-shadow: 0 0 18px rgba(240, 130, 54, 0.18);
+}
+
+.popup-theme .email-field {
+  resize: vertical;
+  min-height: 80px;
+  font-family: var(--body);
+  line-height: 1.45;
+}
+
+/* ---------- Info button + bubble ---------- */
+
+.popup-theme .info-anchor {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.popup-theme .info-btn {
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--paper);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--paper);
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+.popup-theme .info-btn:hover {
+  border-color: var(--ember);
+  color: var(--ember-bright);
+}
+
+.popup-theme .info-message {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translateY(-50%);
+  padding: 8px 12px;
+  background: rgba(11, 20, 38, 0.95);
+  border: 1.3px solid var(--paper-faint);
+  border-radius: 12px;
+  font-family: var(--hand);
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--paper);
+  width: 200px;
+  z-index: 10;
+}
+
+/* ---------- Analyze button ---------- */
+
+.popup-theme .big-analyze-btn {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(95deg, var(--ink) 0%, var(--ember-deep) 40%, var(--ember) 70%, var(--ember-bright) 100%);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(240, 130, 54, 0.25);
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.popup-theme .big-analyze-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(240, 130, 54, 0.4);
+}
+
+/* ---------- Loading state ---------- */
+
+.popup-theme .loading-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 6px;
+}
+
+.popup-theme .loader-container {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.popup-theme .scanner-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-top-color: var(--ember);
+  border-radius: 50%;
+  animation: popup-spin 1.4s linear infinite;
+}
+
+.popup-theme .scanner-line {
+  position: absolute;
+  inset: 12px;
+  border: 2px solid transparent;
+  border-top-color: var(--ember-bright);
+  border-radius: 50%;
+  animation: popup-spin 1.1s linear infinite reverse;
+}
+
+@keyframes popup-spin {
+  to { transform: rotate(360deg); }
+}
+
+.popup-theme .loading-text {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  margin: 6px 0 0;
+  color: var(--paper);
+}
+
+.popup-theme .loading-sub {
+  font-family: var(--body);
+  font-size: 10.5px;
+  color: var(--paper-dim);
+  margin: 0;
+}
+
+/* ---------- Result box ---------- */
+
+.popup-theme .result-box {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--paper-faint);
+  background: rgba(11, 20, 38, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.popup-theme .result-box h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1;
+  margin: 0;
+  background: linear-gradient(135deg, var(--ember-bright) 0%, var(--ember) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.popup-theme .result-box h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0;
+  color: var(--paper);
+}
+
+.popup-theme .result-box p {
+  font-family: var(--body);
+  font-size: 11.5px;
+  color: var(--paper-dim);
+  margin: 0;
+}
+
+/* ---------- Popup shell (header/footer/etc.) ---------- */
+
+.popup-theme.popup-shell {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.popup-theme .popup-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1.5px solid var(--paper-faint);
+  border-radius: 14px;
+  background: rgba(11, 20, 38, 0.4);
+}
+
+.popup-theme .popup-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.popup-theme .popup-at {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--paper);
+  border-radius: 50%;
+  font-size: 13px;
+}
+
+.popup-theme .popup-open-app {
+  background: transparent;
+  border: 1.2px solid var(--paper-faint);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 10.5px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.popup-theme .popup-open-app:hover {
+  border-color: var(--ember);
+  color: var(--ember-bright);
+}
+
+.popup-theme .popup-tab-banner {
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  border: 1.2px solid var(--paper-faint);
+}
+
+.popup-theme .popup-tab-banner.low { background: rgba(34, 197, 94, 0.15); color: #bbf7d0; }
+.popup-theme .popup-tab-banner.med { background: rgba(245, 158, 11, 0.18); color: #fde68a; }
+.popup-theme .popup-tab-banner.high { background: rgba(220, 38, 38, 0.18); color: #fecaca; }
+.popup-theme .popup-tab-banner.warn { background: rgba(251, 191, 36, 0.12); color: var(--paper-dim); }
+
+.popup-theme .popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--paper-faint);
+}
+
+.popup-theme .popup-footer-link {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--paper);
+  text-decoration: underline;
+  text-decoration-color: var(--paper-faint);
+  text-underline-offset: 3px;
+  transition: all 0.18s ease;
+}
+
+.popup-theme .popup-footer-link:hover {
+  color: var(--ember-bright);
+}
+
+.popup-theme .popup-footer-dot {
+  color: var(--paper-faint);
+}

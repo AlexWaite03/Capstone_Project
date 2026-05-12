@@ -1,10 +1,46 @@
 {
-    "manifest_version": 3,
-    "name": "CyberLang Phishing Detection Extension",
-    "description": "A Chrome extension that detects phishing websites using the hybrid Machine Learning and Automata approach developed by CyberLang Analytics.",
-    "version": "1.0",
-    "action": {
-        "popup": "popup.html",
-        "icon": "hi-icon.png"
+  "manifest_version": 3,
+  "name": "CyberLang Phishing Scanner",
+  "version": "1.0.0",
+  "description": "Hybrid phishing and scam detection. Scan URLs and Gmail messages with Automata + ML.",
+  "icons": {
+    "16": "public/icons/logo_16.png",
+    "32": "public/icons/logo_32.png",
+    "64": "public/icons/logo_64.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "public/icons/logo_16.png",
+      "32": "public/icons/logo_32.png"
+    },
+    "default_title": "CyberLang Phishing Scanner"
+  },
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["src/content/gmail.js"],
+      "run_at": "document_idle"
     }
+  ],
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://your-api.com/*",
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["warning.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
