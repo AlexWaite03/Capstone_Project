@@ -34,7 +34,6 @@
   ],
   "host_permissions": [
     "http://localhost:8000/*",
-    "https://your-api.com/*",
     "<all_urls>"
   ],
   "web_accessible_resources": [

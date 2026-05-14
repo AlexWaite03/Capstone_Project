@@ -9,9 +9,10 @@ export default defineConfig({
   resolve: {
     alias: {
       // Import shared React components from the frontend project.
-      '@frontend': path.resolve(__dirname, '../frontend/src'),
+      //'@frontend': path.resolve(__dirname, '../frontend/src'),
       '@shared': path.resolve(__dirname, '../shared'),
     },
+    dedupe: ['react', 'react-dom'],
   },
   server: {
     // Allow Vite to serve files from the sibling frontend folder.

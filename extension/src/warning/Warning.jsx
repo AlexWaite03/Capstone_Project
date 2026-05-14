@@ -25,9 +25,18 @@ export default function Warning() {
       'CyberLang strongly recommends against visiting this site. ' +
       'Are you sure you want to proceed?'
     );
-    if (confirmed) {
+    /*if (confirmed) {
+      window.location.replace(data.url);
+    }*/
+   if (!confirmed) return;
+
+   chrome.runtime.sendMessage(
+    { type: 'ALLOW_ONCE', url: data.url },
+    () => {
+      // Wait for the worker to acknowledge before navigating
       window.location.replace(data.url);
     }
+  );
   }
 
   return (
@@ -78,6 +87,8 @@ export default function Warning() {
         >
           ← Go back to safety
         </button>
+        
+        {
         <button
           onClick={proceedAnyway}
           style={{
@@ -92,6 +103,7 @@ export default function Warning() {
         >
           Proceed anyway
         </button>
+        }
       </div>
 
       <p style={{ marginTop: '2rem', fontSize: '0.85rem', color: '#6b7280' }}>

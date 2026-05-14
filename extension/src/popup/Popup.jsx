@@ -11,7 +11,7 @@ function openWebApp(path = '') {
 export default function Popup() {
   const [currentTab, setCurrentTab] = useState(null);
 
-  /* On mount, ask the background worker what it knows about the active tab. */
+  /* On mount, ask the service worker what it knows about the active tab. */
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -57,9 +57,9 @@ export default function Popup() {
       <ScannerPanel />
 
       <footer className="popup-footer">
-        <FooterLink onClick={() => openWebApp('/works')}>How it Works</FooterLink>
+        <FooterLink onClick={() => openWebApp('/#works')}>How it Works</FooterLink>
         <span className="popup-footer-dot">·</span>
-        <FooterLink onClick={() => openWebApp('/about')}>About</FooterLink>
+        <FooterLink onClick={() => openWebApp('/#about')}>About</FooterLink>
       </footer>
     </div>
   );

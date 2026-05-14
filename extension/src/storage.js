@@ -9,6 +9,7 @@
 
 import { CACHE_TTL_MS, SAFE_DOMAINS } from './config.js';
 
+
 // ---------- URL scan cache ----------
 
 export async function getCachedScan(url) {

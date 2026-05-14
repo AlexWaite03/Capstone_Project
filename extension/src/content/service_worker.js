@@ -16,6 +16,11 @@ import {
   isScannableUrl,
 } from '../storage.js';
 
+// ---------- Onr-time allowance ----------
+
+// URLs the user has explicitly chosen to proceed to from the warning page (only works once)
+const allowOnce = new Set();
+
 // ---------- Installation ----------
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -29,6 +34,13 @@ chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
   if (details.frameId !== 0) return;
 
   const { tabId, url } = details;
+
+  // User clicked "Proceed anyway" on the warning page for this URL.
+  //Clear the allowance so we don't accidentally allow future navigations to the same URL.
+  if (allowOnce.has(url)) {
+    allowOnce.delete(url);
+    return;
+  }
 
   if (!isScannableUrl(url)) return;
 
@@ -146,4 +158,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     getTabState(message.tabId).then((state) => sendResponse(state));
     return true;
   }
+
+  // Warning page asking us to allow a one-time pass for a URL.
+  if (message.type === 'ALLOW_ONCE') {
+    allowOnce.add(message.url);
+    sendResponse({ ok: true });
+    return true;
+  }        
 });
