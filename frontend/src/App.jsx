@@ -1,5 +1,5 @@
+import { useScanner } from './useScanner.jsx'
 import { useState, useEffect } from 'react'
-import { useScanner } from '@shared/useScanner'
 import './App.css'
 
 function App() {
