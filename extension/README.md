@@ -11,6 +11,19 @@ the CyberLang FastAPI backend.
 3. **Gmail scanning** — when you open an email in Gmail, inject a banner
    above the body with its risk rating.
 
+## Usage steps
+
+1. Ensure backend, frontend and extension are already running.
+    Backend:    pip install -r requirements.txt
+                python -m src.api.api
+                uvicorn src.api.api:app -reload
+   Frontend:    npm install
+                npm run dev
+   Extension:   npm install
+                npm run build
+2. Go to Chrome => Manage extensions and turn on Developer mode (toggle in top right).
+3. Select "Load unpacked" and choose the extension/dist folder.
+4. Turn extension on and refresh.
 
 ## How the pieces talk to each other
 
@@ -52,58 +65,3 @@ the CyberLang FastAPI backend.
                                   │
               GET_TAB_STATE → shows current tab's status
 ```
-
-## Testing checklist
-
-### Popup (manual scan)
-- [ ] Normal URL (e.g., `https://example.com`) → result shown
-- [ ] Long URL → result shown, no UI breakage
-- [ ] URL shortener (`https://bit.ly/...`) → result shown
-- [ ] Punycode (`xn--...`) → result shown
-- [ ] %xx-encoded URL → handled
-- [ ] Empty input → "Please enter..." alert
-- [ ] Invalid URL → "Please enter a valid URL." alert
-- [ ] Email text under 10 chars → "Email text is too short." alert
-- [ ] API offline → friendly error in popup, no infinite loading
-
-### Navigation interception (background)
-- [ ] Known phishing URL → warning.html shown
-- [ ] Safe URL (e.g., google.com) → no interruption, green badge
-- [ ] Repeat visit within 24h → uses cache (verify no API call in Network tab)
-- [ ] `chrome://`, `file://` URLs → ignored, no errors
-- [ ] localhost → ignored
-- [ ] API timeout (5s) → fail open, badge shows "?"
-- [ ] Tab closed before scan completes → no error spam
-
-### Warning page
-- [ ] Shows URL and risk percentage correctly
-- [ ] "Go back" returns to previous page
-- [ ] "Proceed anyway" prompts confirmation, then navigates
-- [ ] No way to recursively warn on warning.html itself
-
-### Gmail
-- [ ] Benign personal email → green banner, Low Risk
-- [ ] OTP/verification email → not falsely flagged
-- [ ] Phishing-template email → red banner, High Risk
-- [ ] Banner appears in reading-pane mode
-- [ ] Banner appears in full-page email view
-- [ ] Switching between emails injects new banner, not duplicates
-- [ ] Gmail layout changed and selectors fail → silent failure, no console spam
-
-### Edge cases
-- [ ] Two rapid navigations to same URL → only one API call
-- [ ] Extension reloaded mid-scan → no orphaned UI state
-- [ ] Install-time permission prompt is acceptable (review the warning)
-
-## Known limitations
-
-- **Gmail selectors are fragile.** Google rotates class names. If banners
-  stop appearing, inspect Gmail's DOM and update `SELECTORS` in
-  `src/content/gmail.js`.
-- **Pre-navigation scanning isn't synchronous.** `webNavigation` can't
-  block; the warning page replaces the dangerous page once the scan
-  returns (typically <1s for cached URLs, ~1-2s for fresh).
-- **`<all_urls>` host permission** is a heavy install-time prompt. Users
-  will see "Read your browsing history" / "Read and change all your data on
-  all websites." Required for the navigation interception feature.
-- **No offline mode.** If the API is unreachable, scans fail open.
