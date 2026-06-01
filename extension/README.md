@@ -13,17 +13,13 @@ the CyberLang FastAPI backend.
 
 ## Usage steps
 
-1. Ensure backend, frontend and extension are already running.
-    Backend:    pip install -r requirements.txt
-                python -m src.api.api
-                uvicorn src.api.api:app -reload
-   Frontend:    npm install
-                npm run dev
-   Extension:   npm install
-                npm run build
-2. Go to Chrome => Manage extensions and turn on Developer mode (toggle in top right).
-3. Select "Load unpacked" and choose the extension/dist folder.
-4. Turn extension on and refresh.
+1. Download extension zip file from [].
+2. Unzip the file somewhere on your computer (a folder you won't delete — Chrome reads from this folder permanently).
+3. Open `chrome://extensions` in Chrome (or go to Chrome => Manage extensions).
+4. turn on **Developer mode** (toggle in top right).
+5. Click **Load unpacked** and select the unzipped folder.
+6. Pin the CyberLang Scanner icon to your toolbar.
+
 
 ## How the pieces talk to each other
 
