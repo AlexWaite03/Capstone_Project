@@ -1,7 +1,9 @@
 // useScanner.jsx
 import { useState } from 'react'
 
-const API_BASE = 'http://127.0.0.1:8000'
+//const API_BASE = 'http://127.0.0.1:8000'
+const isDev = chrome.runtime.getManifest().version === '0.0.0';
+const API_BASE = isDev ? 'http://127.0.0.1:8000' : 'https://cyberlang-phishing-detector.onrender.com';
 
 // ---- API call ------------------------------------------------------------
 
